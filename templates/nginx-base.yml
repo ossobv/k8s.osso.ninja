@@ -1,3 +1,17 @@
+# Base Nginx deployment using 3 definitions files:
+# - Deployment
+# - Service
+# - Ingress
+#
+# concatenated by '---'
+#
+# Everything is created in the same namespace.
+
+
+# Creates a deployment with a Nginx:1.10.2 image
+# And expose port 80.
+# Add label: app:nginx-app
+
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -17,6 +31,9 @@ spec:
         - containerPort: 80
 ---
 
+# Service listening on port 80 and routing
+# traffic to pods with the label: app:nginx-app
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -27,8 +44,13 @@ spec:
     - port: 80
   selector:
     app: nginx-app
-
+    # Note: same as the label in the deployment.
 ---
+
+# Ingress configuration for routing traffic
+# from {NAMESPACE}.osso.ninja to the nginx-service
+# The annotations allow let's encrypt (via kubelego) to
+# generate TLS/SSL certificates automatically.
 
 apiVersion: extensions/v1beta1
 kind: Ingress

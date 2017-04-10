@@ -1,3 +1,10 @@
+# Note: Is based on nginx-base.yml
+# Only differences are commented below
+
+
+# Create a configmap containing an index.html file
+# that is mounted in the deployment below.
+
 apiVersion: v1
 data:
   index.html: |
@@ -20,6 +27,9 @@ metadata:
 
 ---
 
+# Configmaps can be mounted as volumes
+# and are available in the container
+
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -40,11 +50,15 @@ spec:
         volumeMounts:
         - mountPath: /var/www/html/
           name: index-volume
+        # mount the volume index-volume
+        # on /var/www/html/
       volumes:
       - configMap:
           defaultMode: 420
           name: nginx-static-html-index
         name: index-volume
+        # Create a volume from the configmap
+        # nginx-static-html-index named index-volume
 ---
 
 apiVersion: v1

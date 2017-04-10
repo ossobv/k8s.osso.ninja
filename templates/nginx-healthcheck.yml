@@ -1,3 +1,11 @@
+# Note: Is based on nginx-static-html.yml
+# Only the differences are commented below
+
+
+# Create another configmap with an
+# customized nginx config.
+# Including /healthz location
+
 apiVersion: v1
 data:
   default: |
@@ -45,6 +53,15 @@ metadata:
   namespace: {NAMESPACE}
 
 ---
+
+# Create a deployment with 2 replicas.
+# livenessprobes are used to check if the pod is healthy or should be killed & recreated
+# readinessprobes are used to check if the pod is ready to accept traffic.
+# - initialDelaySeconds: wait # seconds before polling
+# - periodSeconds: period between polls
+# - successThreshold: # of successful polls before success
+# - timeoutSeconds: timeout value
+# - failureThreshold: # of faulty polls before failure
 
 apiVersion: extensions/v1beta1
 kind: Deployment
