@@ -10,11 +10,13 @@ Getting started
 
 #. Copy the templates to another directory, for example::
 
-    cp templates/*.yml examples/
+    mkdir NAMESPACE
+    cp templates/*.yml NAMESPACE/
 
 #. Replace all ``{NAMESPACE}`` occurrences with the NAMESPACE on your label::
 
-    find '*.yml' -type f -exec sed -i 's/{NAMESPACE}/NAMESPACE/g' {} +
+    cd NAMESPACE
+    find . -name '*.yml' -type f -exec sed -i 's/{NAMESPACE}/NAMESPACE/g' {} +
 
 #. Create a kubectl alias with your TOKEN and NAMESPACE::
 
