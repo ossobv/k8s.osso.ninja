@@ -4,7 +4,23 @@ k8s.osso.ninja
 Getting started
 ---------------
 
-# source kubectl_demo TOKEN NAMESPACE
+1. Copy the templates to another directory for example:
+   
+   ``cp examples/templates/*.yml examples/``
+
+2. Replace all {NAMESPACE} occurances with the namespace on your label
+
+  ``find examples/*.yml -type f -exec sed -i 's/{NAMESPACE}/'$2'/g' {} +``
+
+3. Create an alias with your TOKEN and NAMESPACE: 
+
+  ``alias kubectl_demo="kubectl --certificate-authority='/full/path/to/ca.crt' --server='https://k8s.osso.ninja' --token='TOKEN' --namespace NAMESPACE"```
+
+4. Check if it works: 
+
+ ``# kubectl_demo get pods``
+ 
+ Should give no errors and return nothing.
 
 Examples
 --------
