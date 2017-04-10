@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: awesome
+  name: nginx-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-app
+    spec:
+      containers:
+      - name: nginx-container
+        image: ossobv/nginx:1.10.2
+        ports:
+        - containerPort: 80
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: awesome
+  name: nginx-service
+spec:
+  selector:
+    app: nginx-app
+  ports:
+    - port: 80
