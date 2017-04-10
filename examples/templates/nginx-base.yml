@@ -1,0 +1,54 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: {NAMESPACE}
+  name: nginx-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-app
+    spec:
+      containers:
+      - name: nginx-container
+        image: ossobv/nginx:1.10.2
+        ports:
+        - containerPort: 80
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {NAMESPACE}
+  name: nginx-service
+spec:
+  ports:
+    - port: 80
+  selector:
+    app: nginx-app
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+  namespace: {NAMESPACE}
+  name: nginx-ingress
+spec: 
+  tls:
+  - hosts:
+    -  {NAMESPACE}.osso.ninja
+    secretName: {NAMESPACE}-nginx-tls
+  rules:
+  - host: {NAMESPACE}.osso.ninja
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: nginx-service
+          servicePort: 80

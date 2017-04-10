@@ -1,0 +1,135 @@
+piVersion: v1
+data:
+  default: |
+    server {
+      listen 80 default_server;
+      root /var/www/html;
+      index index.html;
+      server_name _;
+
+      location /healthz {
+      	return 200;
+      }
+
+      location / {
+      	try_files $uri $uri/ =404;
+      }
+    }
+
+kind: ConfigMap
+metadata:
+  name: nginx-static-html-conf
+  namespace: {NAMESPACE}
+
+---
+
+apiVersion: v1
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset="UTF-8">
+    <title>Hello world</title>
+    </head>
+
+    <body>
+        <div>Livecheck example from {NAMESPACE}.osso.ninja!</div>
+        <div>Alive check is on /healthz.</div>
+    </body>
+
+    </html>
+kind: ConfigMap
+metadata:
+  name: nginx-static-html-index
+  namespace: {NAMESPACE}
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: {NAMESPACE}
+  name: nginx-static-html-deploy
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-static-html-app
+    spec:
+      containers:
+      - name: nginx-app
+        image: ossobv/nginx:1.10.2
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /etc/nginx/sites-enabled/
+          name: conf-volume
+        - mountPath: /var/www/html/
+          name: index-volume
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: 80
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1  
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: nginx-static-html-config
+        name: conf-volume
+      - configMap:
+          defaultMode: 420
+          name: nginx-static-html-index
+        name: index-volume
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {NAMESPACE}
+  name: nginx-static-html-service
+spec:
+  ports:
+    - port: 80
+  selector:
+    app: nginx-static-html-app
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+  namespace: {NAMESPACE}
+  name: nginx-static-html-ingress
+spec: 
+  tls:
+  - hosts:
+    -  {NAMESPACE}.osso.ninja
+    secretName: {NAMESPACE}-static-web-nginx-tls
+  rules:
+  - host: {NAMESPACE}.osso.ninja
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: nginx-static-html-service
+          servicePort: 80
