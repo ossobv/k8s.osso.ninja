@@ -20,10 +20,7 @@ Getting started
 
 #. Create a kubectl alias with your TOKEN and NAMESPACE::
 
-    alias kubectl_demo="kubectl --certificate-authority='/full/path/to/ca.crt' \
-      --server='https://k8s.osso.ninja' --token='TOKEN' --namespace NAMESPACE"
-
-   The ``ca.crt`` is in the repository root.
+    alias kubectl_demo='kubectl --server=https://k8s.osso.ninja --token=TOKEN --namespace=NAMESPACE'
 
 #. Check that it works::
 
