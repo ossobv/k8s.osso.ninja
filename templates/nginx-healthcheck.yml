@@ -18,7 +18,7 @@ data:
 
 kind: ConfigMap
 metadata:
-  name: nginx-static-html-conf
+  name: nginx-static-html-config
   namespace: {NAMESPACE}
 
 ---
