@@ -32,7 +32,8 @@ spec:
         # Kubernetes internally automatically resolves redis-service to the service IP which can be used to connect
         # to Redis.
         #
-        # Note: the pod connects to the service, which routes to the Redis pod 
+        # Note: the pod connects to the service, which routes to the Redis pod
+
 ---
 
 # Expose the django-app via a service
@@ -50,7 +51,7 @@ spec:
 
 ---
 
-# Expose the django-service 
+# Expose the django-service
 # via {NAMESPACE}.osso.ninja
 
 apiVersion: extensions/v1beta1
@@ -62,7 +63,7 @@ metadata:
     kubernetes.io/tls-acme: "true"
   namespace: {NAMESPACE}
   name: django-ingress
-spec: 
+spec:
   tls:
   - hosts:
     -  {NAMESPACE}.osso.ninja

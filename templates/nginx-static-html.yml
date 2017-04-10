@@ -83,10 +83,10 @@ metadata:
     kubernetes.io/tls-acme: "true"
   namespace: {NAMESPACE}
   name: nginx-static-html-ingress
-spec: 
+spec:
   tls:
   - hosts:
-    -  {NAMESPACE}.osso.ninja
+    - {NAMESPACE}.osso.ninja
     secretName: {NAMESPACE}-static-web-nginx-tls
   rules:
   - host: {NAMESPACE}.osso.ninja

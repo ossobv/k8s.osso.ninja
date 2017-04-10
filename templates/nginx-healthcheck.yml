@@ -103,7 +103,7 @@ spec:
             scheme: HTTP
           periodSeconds: 10
           successThreshold: 1
-          timeoutSeconds: 1  
+          timeoutSeconds: 1
       volumes:
       - configMap:
           defaultMode: 420
@@ -137,7 +137,7 @@ metadata:
     kubernetes.io/tls-acme: "true"
   namespace: {NAMESPACE}
   name: nginx-static-html-ingress
-spec: 
+spec:
   tls:
   - hosts:
     -  {NAMESPACE}.osso.ninja

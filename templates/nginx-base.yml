@@ -29,6 +29,7 @@ spec:
         image: ossobv/nginx:1.10.2
         ports:
         - containerPort: 80
+
 ---
 
 # Service listening on port 80 and routing
@@ -45,6 +46,7 @@ spec:
   selector:
     app: nginx-app
     # Note: same as the label in the deployment.
+
 ---
 
 # Ingress configuration for routing traffic
@@ -61,10 +63,10 @@ metadata:
     kubernetes.io/tls-acme: "true"
   namespace: {NAMESPACE}
   name: nginx-ingress
-spec: 
+spec:
   tls:
   - hosts:
-    -  {NAMESPACE}.osso.ninja
+    - {NAMESPACE}.osso.ninja
     secretName: {NAMESPACE}-nginx-tls
   rules:
   - host: {NAMESPACE}.osso.ninja
