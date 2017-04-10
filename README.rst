@@ -4,74 +4,85 @@ k8s.osso.ninja
 Getting started
 ---------------
 
-1. Copy the templates to another directory for example:
-   
-   ``cp templates/*.yml examples/``
+1. Fetch this repository::
 
-2. Replace all {NAMESPACE} occurances with the NAMESPACE on your label:
+    git clone https://github.com/ossobv/k8s.osso.ninja.git
 
-  ``find *.yml -type f -exec sed -i 's/{NAMESPACE}/NAMESPACE/g' {} +``
+#. Copy the templates to another directory, for example::
 
-3. Create an alias with your TOKEN and NAMESPACE: 
+    cp templates/*.yml examples/
 
-  ``alias kubectl_demo="kubectl --certificate-authority='/full/path/to/ca.crt' --server='https://k8s.osso.ninja' --token='TOKEN' --namespace NAMESPACE"```
+#. Replace all ``{NAMESPACE}`` occurrences with the NAMESPACE on your label::
 
-4. Check if it works: 
+    find '*.yml' -type f -exec sed -i 's/{NAMESPACE}/NAMESPACE/g' {} +
 
- ``# kubectl_demo get pods``
- 
- Should give no errors and return nothing.
+#. Create a kubectl alias with your TOKEN and NAMESPACE::
+
+    alias kubectl_demo="kubectl --certificate-authority='/full/path/to/ca.crt' \
+      --server='https://k8s.osso.ninja' --token='TOKEN' --namespace NAMESPACE"
+
+   The ``ca.crt`` is in the repository root.
+
+#. Check that it works::
+
+    kubectl_demo get pods
+
+   It should give no errors and return nothing.
 
 
 Example 1: basic Nginx
 ----------------------
 
-1. Deploy the basic Nginx app with:
+1. Deploy the basic Nginx app with::
 
-  ``kubectl_demo create -f nginx-base.yml``
+    kubectl_demo create -f nginx-base.yml
 
-2. Follow the creation of the pods with
+#. Follow the creation of the pods with::
 
-   ``kubectl_demo get pods``
+    kubectl_demo get pods
 
-4. When the pod is running (1/1), link to NAMESPACE.osso.ninja to view the Nginx webpage.
+#. When the pod is running (1/1), browse to NAMESPACE.osso.ninja to view
+   the Nginx webpage.
 
-3. View the logs with:
+#. View the logs with::
 
-   ``kubectl_demo logs #PODNAME#``
+    kubectl_demo logs PODNAME
 
-   Where #PODNAME# is a full name from the output of step 2. 
+   Where PODNAME is a full name from the output of step 2.
 
-4. Attach to the container with:
+#. Attach to the container with::
 
-   ``kubectl_demo exec -ti #PODNAME# /bin/bash`` 
+    kubectl_demo exec -ti PODNAME /bin/bash
 
 
 Example 2: static html Nginx
 ----------------------------
 
-Note: Remove existing deployments: 
- 
-   ``kubectl_demo delete -f filename.yml``
+.. note:: *Removing existing deployments*
+
+    .. code-block::
+
+        kubectl_demo delete -f filename.yml
 
 
-1. Deploy the static html Nginx app with:
+1. Deploy the static html Nginx app with::
 
-  ``kubectl_demo create -f nginx-static-html.yml``
+    kubectl_demo create -f nginx-static-html.yml
 
-2. Follow the creation of the pods with
+#. Follow the creation of the pods with::
 
-   ``kubectl_demo get pods``
+    kubectl_demo get pods
 
-3. Wait until pod is running and link to NAMESPACE.osso.ninja
+#. Wait until pod is running and link to NAMESPACE.osso.ninja.
 
-4. Remove deployments:
+#. Remove deployments::
 
-   ``kubectl_demo create -f nginx-static-html.yml``
+    kubectl_demo create -f nginx-static-html.yml
 
-4. Edit nginx-static-html.yml and change the contents of the webpage in the configmap
+#. Edit nginx-static-html.yml and change the contents of the webpage in
+   the configmap.
 
-5. Re-run step 1.
+#. Re-run step 1.
 
 
 Example 3: K8s healthchecks
