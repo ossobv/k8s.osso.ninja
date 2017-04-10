@@ -58,12 +58,14 @@ Example 1: basic Nginx
 Example 2: static html Nginx
 ----------------------------
 
-.. note:: *Removing existing deployments*
+.. note:: **Removing existing deployments**
 
-    .. code-block::
+    Removing existing deployments can be done by the inverse of
+    ``create``: ``delete``::
 
         kubectl_demo delete -f filename.yml
 
+----
 
 1. Deploy the static html Nginx app with::
 
@@ -88,40 +90,30 @@ Example 2: static html Nginx
 Example 3: K8s healthchecks
 ---------------------------
 
-Note: Remove existing deployments: 
- 
-   ``kubectl_demo delete -f filename.yml``
+1. Deploy the healthcheck Nginx app with::
 
+    kubectl_demo create -f nginx-healthcheck.yml
 
-1. Deploy the healthcheck Nginx app with:
+#. Follow the creation of the pods with::
 
-  ``kubectl_demo create -f nginx-healthcheck.yml``
+    kubectl_demo get pods
 
-2. Follow the creation of the pods with
+#. Wait until pod is running and browse to NAMESPACE.osso.ninja.
 
-   ``kubectl_demo get pods``
-
-3. Wait until pod is running and link to NAMESPACE.osso.ninja
-
-4. Read the yml file for more info about healthchecks.
+#. Read the yml file for more info about health-checks.
 
 
 Example 4: Django websocket redis simple chat
 ---------------------------------------------
 
-Note: Remove existing deployments: 
- 
-   ``kubectl_demo delete -f filename.yml``
+1. Deploy the Django websocket redis app with::
 
+    kubectl_demo create -f django-websocket-redis.yml
 
-1. Deploy the Django websocket redis app with:
+#. Follow the creation of the pods with::
 
-  ``kubectl_demo create -f django-websocket-redis.yml``
+    kubectl_demo get pods
 
-2. Follow the creation of the pods with
+#. Wait until both pods are running and link to NAMESPACE.osso.ninja.
 
-   ``kubectl_demo get pods``
-
-3. Wait until both pods are running and link to NAMESPACE.osso.ninja
-
-4. Read the yml file for more info about the setup.
+#. Read the yml file for more info about the setup.
