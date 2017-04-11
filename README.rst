@@ -40,8 +40,8 @@ Example 1: basic Nginx
 
     kubectl_demo get pods
 
-#. When the pod is running (1/1), browse to NAMESPACE.osso.ninja to view
-   the Nginx webpage.
+#. When the pod is running (1/1), browse to
+   https://NAMESPACE.osso.ninja/ to view the Nginx webpage.
 
 #. View the logs with::
 
@@ -74,7 +74,7 @@ Example 2: static html Nginx
 
     kubectl_demo get pods
 
-#. Wait until pod is running and link to NAMESPACE.osso.ninja.
+#. Wait until pod is running and browse to https://NAMESPACE.osso.ninja/.
 
 #. Remove deployments::
 
@@ -97,7 +97,7 @@ Example 3: K8s healthchecks
 
     kubectl_demo get pods
 
-#. Wait until pod is running and browse to NAMESPACE.osso.ninja.
+#. Wait until pod is running and browse to https://NAMESPACE.osso.ninja/.
 
 #. Read the yml file for more info about health-checks.
 
